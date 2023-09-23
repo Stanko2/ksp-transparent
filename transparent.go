@@ -1,15 +1,18 @@
 package main
 
 import (
+	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"ksp.sk/transparent/candle"
 	"ksp.sk/transparent/config"
 	"ksp.sk/transparent/event"
-	"net/http"
-	"time"
-)
+	"ksp.sk/transparent/freefood"
 
-import _ "gopkg.in/yaml.v2"
+	_ "gopkg.in/yaml.v2"
+)
 
 func getCandle(c *gin.Context) {
 	events, err := candle.Events(time.Now())
@@ -36,6 +39,8 @@ func getIndex(c *gin.Context) {
 
 func main() {
 	err := config.Load()
+	freefood.Download()
+	fmt.Println("Loaded config")
 	if err != nil {
 		panic(err)
 	}
